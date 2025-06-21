@@ -1,7 +1,10 @@
 const express =require('express');
-const router = express.Router();
+const isAdmin = require('../middlewares/isAdmin');
+
 
 module.exports = (productController) => {
-    router.post('/', (req,res)=>productController.create(req,res));
-    return router
-}
+    const router = express.Router();
+    router.get('/', (req,res)=>productController.getAll(req,res));
+    router.post('/',isAdmin, (req,res)=>productController.create(req,res));
+    return router;
+};

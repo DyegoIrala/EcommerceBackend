@@ -1,4 +1,4 @@
-const Product = require('../../domain/entities/Product');
+const Product = require('../../domain/entities/Product'); //Trae la entidad Product
 
 class CreateProduct {
     constructor(productRepository){

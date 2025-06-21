@@ -1,3 +1,6 @@
+// DTO means Data Transfer Object, is a object that carries data between processes.
+// src/application/dtos/ProductDTO.js
+
 class ProductDTO{
     constructor(product){
         this.id = product._id;
