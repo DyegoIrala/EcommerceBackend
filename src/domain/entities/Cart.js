@@ -1,21 +1,17 @@
-class Cart{
-    constructor() {
-        this.items = [];
+class Cart {
+  constructor({ userId, items = [] }) {
+    this.userId = userId;
+    this.items = items; // [{ product, quantity }]
+  }
+
+  addItem(product, quantity) {
+    const existing = this.items.find(item => item.product.toString() === product._id.toString());
+    if (existing) {
+      existing.quantity += quantity;
+    } else {
+      this.items.push({ product, quantity });
     }
-    
-    addItem(item) {
-        this.items.push(item);
-    }
-    
-    removeItem(itemId) {
-        this.items = this.items.filter(item => item.id !== itemId);
-    }
-    
-    getItems() {
-        return this.items;
-    }
-    
-    clear() {
-        this.items = [];
-    }
+  }
 }
+
+module.exports = Cart;

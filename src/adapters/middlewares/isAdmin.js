@@ -1,7 +1,4 @@
 
-
-
-
 function isAdmin(req, res, next) {
   const roles = req.userRoles;
 

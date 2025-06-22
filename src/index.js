@@ -23,11 +23,22 @@ const SignUp = require('./application/useCases/SignUp');
 //Cupon Repositories and Controllers
 const MongoCuponRepository = require('./infraestructure/repositories/MongoCuponRepository');
 const CreateCupon = require('./application/useCases/CreateCupon');
-const CuponController = require('./adapters/controllers/CuponController');  
+const CuponController = require('./adapters/controllers/CuponController'); 
+
+//Cart Repositories and Controllers
+const MongoCartRepository = require('./infraestructure/repositories/MongoCartRepository');
+const CartController = require('./adapters/controllers/CartController');
+const cartRoutes = require('./adapters/routes/cartRoutes');
+const cartRepo = new MongoCartRepository();
+const cartController = new CartController(cartRepo);
 
 
-
-
+//Review Repositores and Controllers
+const MongoReviewRepository = require('./infraestructure/repositories/MongoReviewRepository');
+const ReviewController = require('./adapters/controllers/ReviewController');
+const reviewRoutes = require('./adapters/routes/reviewRoutes');
+const reviewRepository = new MongoReviewRepository();
+const reviewController = new ReviewController(reviewRepository);
 
 
 const {verifyToken} = require('./adapters/middlewares/authJwt');
@@ -40,11 +51,9 @@ const cuponRoutes = require('./adapters/routes/cuponRoutes');
 
 
 
+
 const app = express();
 const port = config.port;  
-
-
-
 
 // MiddleWwares
 app.use(express.json());
@@ -53,6 +62,7 @@ app.use(express.urlencoded({ extended: false }));
 const dbType = config.DB_TYPE || 'mongodb';
 let productRepository;
 let orderRepository;
+
 console.log('>> DB_TYPE:', dbType);
 
 if (dbType === 'mysql'){
@@ -61,6 +71,8 @@ if (dbType === 'mysql'){
 } else{
     productRepository = new MongoProductRepository();
     orderRepository = new MongoOrderRepository();
+    
+    
 }
 
 // --Setup Auth --
@@ -84,10 +96,15 @@ const cuponController = new CuponController(createCuponUseCase);
 
 
 
+
+
+
 //Routes
 app.use('/api/v1/products', verifyToken, productRoutes(productController));
 app.use('/api/v1/orders', verifyToken, orderRoutes(orderController));
 app.use('/api/v1/cupones', verifyToken, cuponRoutes(cuponController));
+app.use('/api/v1/cart', cartRoutes(cartController));
+app.use('/api/v1/reviews', reviewRoutes(reviewController));
 
 
 
